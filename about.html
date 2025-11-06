@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Про нас</title>
+  <link rel="stylesheet" href="index.css" />
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #024c98;
+      color: white;
+      margin: 0;
+      background-image: url(images/background-water.jpg);
+      background-size: cover;
+      background-position: center;
+      animation: gradientMove 15s ease infinite;
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @media (max-width: 768px) {
+      body {
+        animation: gradientMove 25s ease infinite;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="navbar">
+      <a href="index.html">Каталог</a>
+      <a href="about.html" class="active">Про нас</a>
+      <a href="repair.html">Ремонт</a>
+    </header>
+
+    <main class="content">
+      <h1 class="page-title">Про нас</h1>
+      <p>Інтернет-магазин <strong>«Майстер-Водолій»</strong> — офіційний представник заводу «Водолій».</p>
+      <p>Ми спеціалізуємося на продажу занурювальних та поверхневих насосів, комплектуючих і запчастин.</p>
+      <p>Працюємо по всій Україні з доставкою. Наша мета — забезпечити клієнтів якісним обладнанням для водопостачання за доступними цінами.</p>
+    </main>
+  </div>
+</body>
+</html>

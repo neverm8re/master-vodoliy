@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ремонт насосів</title>
+  <link rel="stylesheet" href="index.css" />
+  
+</head>
+<body>
+  <div class="container">
+    <header class="navbar">
+      <a href="index.html">Каталог</a>
+      <a href="about.html">Про нас</a>
+      <a href="repair.html" class="active">Замовити дзвінок</a>
+    </header>
+
+    <main class="content">
+      <h1 class="page-title">Ремонт насосів у Харкові</h1>
+
+      <div class="repair-description">
+        <p><strong>Ремонт насосів у Харкові від «Майстер Водолій»</strong></p>
+        <p>Досвідчений майстер виконує ремонт водяних насосів у Харкові будь-якої складності. Майстер спеціалізується на відновленні насосів <strong>«Водолій» (Промелектро), ХЕЛЗ, Wilo, Pedrollo, Sprut, Euroaqua</strong> та інших виробників.</p>
+        <p>Перед початком роботи проводиться ретельна діагностика, щоб точно визначити причину несправності та забезпечити якісний і швидкий ремонт. Потім клієнт вводиться в курс справи та в залежності від відповіді проходить ремонт. </p>
+        <p>Майстер має професійне обладнання та інструменти, використовує лише перевірені запчастини та витратні матеріали, що гарантує надійність та довговічність відремонтованого насоса.</p>
+        <p>Завдяки індивідуальному підходу, відсутності посередників і великому досвіду у сфері насосного обладнання, <strong>«Майстер Водолій»</strong> виконує роботу швидко, якісно та за доступною ціною.</p>
+      </div>
+
+      <form id="repair-form" class="repair-form" autocomplete="off">
+        <label for="surname">Прізвище</label>
+        <input type="text" name="surname" placeholder="Прізвище" required />
+
+        <label for="name">Імʼя</label>
+        <input type="text" name="name" placeholder="Імʼя" required />
+
+        <label for="phone">Телефон</label>
+        <input type="tel" name="phone" placeholder="+380XXXXXXXXX" required
+               pattern="^\+380\d{9}$" inputmode="tel" maxlength="13"
+               title="Введіть номер у форматі +380XXXXXXXXX" />
+
+        <label for="model">Модель насоса та проблема</label>
+        <input type="text" name="model" placeholder="Модель насоса / опис проблеми" />
+
+        <button type="submit">Надіслати запит</button>
+      </form>
+
+      <div id="status" class="status-message"></div>
+    </main>
+  </div>
+</body>
+</html>

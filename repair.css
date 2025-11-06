@@ -1,0 +1,106 @@
+body {
+      font-family: sans-serif;
+      background: #024c98;
+      color: white;
+      margin: 0;
+      background-image: url(images/background-water.jpg);
+      animation: gradientMove 15s ease infinite;
+      background-size: cover;
+      background-attachment: fixed;
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @media (max-width: 768px) {
+      body {
+        animation-duration: 25s; 
+      }
+    }
+
+    .content {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 20px;
+      background: rgba(134, 134, 134, 0.45);
+      border-radius: 12px;
+      backdrop-filter: blur(5px);
+    }
+
+    .page-title {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 2em;
+      font-weight: 700;
+    }
+
+    .repair-description {
+      line-height: 1.6;
+      background: rgba(255, 255, 255, 0.747);
+      padding: 15px 20px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      font-size: 1rem;
+    }
+
+    .repair-description strong {
+      color: #ffdd57;
+    }
+
+    .repair-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .repair-form label {
+      font-weight: bold;
+      margin-top: 5px;
+    }
+
+    .repair-form input {
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      font-size: 1rem;
+    }
+
+    .repair-form button {
+      background: #ffdd57;
+      color: #024c98;
+      font-weight: bold;
+      border: none;
+      padding: 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.3s;
+      font-size: 1.1rem;
+    }
+
+    .repair-form button:hover {
+      background: #e0c01d;
+    }
+
+    .status-message {
+      text-align: center;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    @media (max-width: 600px) {
+      .content {
+        padding: 15px;
+      }
+      .repair-description {
+        font-size: 0.95rem;
+      }
+      .page-title {
+        font-size: 1.6em;
+      }
+      .repair-form input, .repair-form button {
+        font-size: 0.95rem;
+      }
+    }
