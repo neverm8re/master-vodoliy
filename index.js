@@ -2,14 +2,14 @@ const supabaseUrl = 'https://aaxvtwqktggbjmxsmtyl.supabase.co';
   const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFheHZ0d3FrdGdnYmpteHNtdHlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1MTYyMzksImV4cCI6MjA3MzA5MjIzOX0.y-DbmKs1r-o4uPq66Yqwcg1a4_0dbtaEmbdeL6VIKZY';                   // заміни на свій anon-key
   const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-  let productsData = [];
+  window.pumpsData = [];
   let currentCategory = 'all';
   const pumptypeSet = new Set();
 
   async function loadProducts() {
     const { data, error } = await supabase.from('products').select('*');
     if (error) { console.error(error); return; }
-    productsData = data;
+    window.pumpsData = data;
     data.forEach(p => {
       if (p.category === "Занурювальні насоси" && p.pumptype) {
         pumptypeSet.add(p.pumptype);
@@ -31,27 +31,30 @@ const supabaseUrl = 'https://aaxvtwqktggbjmxsmtyl.supabase.co';
     });
   }
 
-  function renderProducts() {
-    const container = document.getElementById("products");
-    container.innerHTML = '';
-    productsData.forEach(item => {
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.dataset.category = item.category || 'Інше';
-      card.dataset.pumptype = item.pumptype || '';
+ function renderProducts() {
+  const container = document.getElementById("products");
+  container.innerHTML = '';
 
-      card.innerHTML = `
-        <img src="${item.img}" alt="${item.title}">
-        <h3>${item.title}</h3>
-        <p>${item.short || ''}</p>
-        <p class="price">${item.price}</p>
-        <button class="buy-btn" onclick="event.stopPropagation(); addToCart('${item.id}')">Купити</button>
-      `;
-      card.onclick = () => window.location.href = `pumps/pump.html?id=${item.id}`;
-      container.appendChild(card);
-    });
-    filterAndSearch();
-  }
+  window.pumpsData.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.dataset.category = item.category || 'Інше';
+    card.dataset.pumptype = item.pumptype || '';
+
+    card.innerHTML = `
+      <img src="${item.img}" alt="${item.title}">
+      <h3>${item.title}</h3>
+      <p>${item.short || ''}</p>
+      <p class="price">${item.price}</p>
+      <button class="buy-btn" onclick="event.stopPropagation(); addToCart('${item.id}')">Купити</button>
+    `;
+    card.onclick = () => window.location.href = `pumps/pump.html?id=${item.id}`;
+    container.appendChild(card);
+  });
+
+  filterAndSearch();
+}
+
 
   function addToCart(id) {
     let cart = JSON.parse(localStorage.getItem("cart") || "[]");
