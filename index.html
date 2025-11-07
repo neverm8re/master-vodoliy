@@ -1,69 +1,166 @@
 <!DOCTYPE html>
 <html lang="uk">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Інтернет-магазин насосів</title>
-  <link rel="stylesheet" href="index.css">
-  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Інтернет-магазин насосів</title>
+    <link rel="stylesheet" href="index.css" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="movingbubbles.css" type="text/css" />
+    <script src="movingbubbles.js" type="text/javascript"></script>
+  </head>
 
-<body>
-  <div class="parallax-container">
-  <div class="parallax-bg"></div>
-</div>
-<div class="navbar">
-  <a href="index.html">Каталог</a>
-  <a href="about.html">Про нас</a>
-  <a href="repair.html">Замовити дзвінок</a>
-</div>
-
-  <header class="hero">
-    <div class="overlay">
-      <h1 class="visually-hidden">Магазин насосів, ремонт насосів Водолій і не тільки, продаж насосів та запчастин</h1>
-      <h1 class="visually-hidden">Магазин насосов, ремонт насосов Водолей и не только, продажа насосов и запчастей</h1>
-      <img src="images/new-logo.png" style="width: 100%;" alt="">
-      <p class="subtitle">Продаж насосів, комплектуючих та запчастин</p>
-      <p class="about">Офіційний представник заводу "Водолій"</p>
-      <p class="contact">Тел: <strong>+38 (095) 569-55-10</strong></p>
-      <p><a href="cart.html" class="cart-link">🛒 Перейти до кошика</a></p>
-      <section class="benefits">
-        <div class="benefit-card"><img src="images/Group 1.png" alt=""></div>
-        <div class="benefit-card"><img src="images/Group 2.png" alt=""></div>
-        <div class="benefit-card"><img src="images/Group 3.png" alt=""></div>
-      </section>
+  <body>
+    <div class="parallax-container">
+      <div class="parallax-bg"></div>
     </div>
-  </header>
+    <div class="navbar">
+      <a href="index.html">Каталог</a>
+      <a href="about.html">Про нас</a>
+      <a href="repair.html">Замовити дзвінок</a>
+    </div>
 
-<section class="shop-layout">
-  <div id="filterOverlay" class="filter-overlay" onclick="closeMobileFilters()"></div>
+    <header class="hero">
+      <div class="overlay">
+        <h1 class="visually-hidden">
+          Магазин насосів, ремонт насосів Водолій і не тільки, продаж насосів та
+          запчастин
+        </h1>
+        <h1 class="visually-hidden">
+          Магазин насосов, ремонт насосов Водолей и не только, продажа насосов и
+          запчастей
+        </h1>
+        <img src="images/new-logo.png" style="width: 100%" alt="" />
+        <p class="subtitle">Продаж насосів, комплектуючих та запчастин</p>
+        <p class="about">Офіційний представник заводу "Водолій"</p>
+        <p class="contact">Тел: <strong>+38 (095) 569-55-10</strong></p>
+        <p><a href="cart.html" class="cart-link">🛒 Перейти до кошика</a></p>
+        <section class="why-us">
+          <div class="why-title">
+            <div class="circles"></div>
+            <h2>ЧОМУ МИ?</h2>
+          </div>
 
-  <aside class="sidebar" id="sidebarFilters" onclick="event.stopPropagation()">
-    <button data-category="all" onclick="filterCategory('all')">Усі</button>
-    <button data-category="Занурювальні насоси" onclick="filterCategory('Занурювальні насоси')">Занурювальні насоси</button>
-    <button data-category="Поверхневі насоси" onclick="filterCategory('Поверхневі насоси')">Поверхневі насоси</button>
-    <button data-category="Комплектуючі та запчастини" onclick="filterCategory('Комплектуючі та запчастини')">Комплектуючі та запчастини</button>
-    <button data-category="Автоматика для насосу" onclick="filterCategory('Автоматика для насосу')">Автоматика для насосу</button>
-  </aside>
+          <div class="why-grid">
+            <div class="why-card glass-card">
+              <h3>Досвід, що говорить сам за себе</h3>
+              <p>
+                Майстер має багаторічний досвід ремонту насосів у реальних
+                умовах. Кожен ремонт виконується з точністю та турботою.
+              </p>
+            </div>
 
-  <div class="products-wrapper">
-  <button class="mobile-filter-toggle" onclick="toggleMobileFilters()">☰ Категорії</button>
+            <div class="why-card glass-card">
+              <h3>Індивідуальний підхід</h3>
+              <p>
+                Ми не просто ремонтуємо — ми слухаємо. Пояснюємо суть поломки та
+                погоджуємо рішення перед роботою.
+              </p>
+            </div>
 
-  <div class="search-wrapper">
-    <input type="text" id="searchInput" placeholder="Пошук товару..." oninput="filterAndSearch()" />
-  </div>
-  <div class="pump-series-filter" id="pumpSeriesContainer">
-  <h3>Виберіть серію насосів</h3>
-  <div id="pumpSeriesButtons" class="pump-series-buttons"></div>
-</div>
+            <div class="why-card glass-card">
+              <h3>Якість, яку можна відчути</h3>
+              <p>
+                Використовуємо лише перевірені запчастини і професійне
+                обладнання, що гарантує довговічність насоса.
+              </p>
+            </div>
 
-  <section class="product-list" id="products"></section>
-</div>
-</section>
+            <div class="why-card glass-card">
+              <h3>Результат, що залишиться з вами</h3>
+              <p>
+                Після ремонту насос працює стабільно і довго. Клієнти
+                повертаються до нас знову — бо цінують результат.
+              </p>
+            </div>
+          </div>
+        </section>
 
-  <footer>
-    &copy; 2025 Магазин "Майстер-Водолій". Самовивіз: м.Харків, ТЦ Барабашово, вул. Каринська 47
-  </footer>
-</body>
+        <section class="benefits">
+          <div class="benefit-card">
+            <img src="images/Group 1.png" alt="" />
+          </div>
+          <div class="benefit-card">
+            <img src="images/Group 2.png" alt="" />
+          </div>
+          <div class="benefit-card">
+            <img src="images/Group 3.png" alt="" />
+          </div>
+        </section>
+      </div>
+    </header>
+
+    <section class="shop-layout">
+      <div
+        id="filterOverlay"
+        class="filter-overlay"
+        onclick="closeMobileFilters()"
+      ></div>
+
+      <aside
+        class="sidebar"
+        id="sidebarFilters"
+        onclick="event.stopPropagation()"
+      >
+        <button data-category="all" onclick="filterCategory('all')">Усі</button>
+        <button
+          data-category="Занурювальні насоси"
+          onclick="filterCategory('Занурювальні насоси')"
+        >
+          Занурювальні насоси
+        </button>
+        <button
+          data-category="Поверхневі насоси"
+          onclick="filterCategory('Поверхневі насоси')"
+        >
+          Поверхневі насоси
+        </button>
+        <button
+          data-category="Комплектуючі та запчастини"
+          onclick="filterCategory('Комплектуючі та запчастини')"
+        >
+          Комплектуючі та запчастини
+        </button>
+        <button
+          data-category="Автоматика для насосу"
+          onclick="filterCategory('Автоматика для насосу')"
+        >
+          Автоматика для насосу
+        </button>
+      </aside>
+
+      <div class="products-wrapper">
+        <button class="mobile-filter-toggle" onclick="toggleMobileFilters()">
+          ☰ Категорії
+        </button>
+
+        <div class="search-wrapper">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Пошук товару..."
+            oninput="filterAndSearch()"
+          />
+        </div>
+        <div class="pump-series-filter" id="pumpSeriesContainer">
+          <h3>Виберіть серію насосів</h3>
+          <div id="pumpSeriesButtons" class="pump-series-buttons"></div>
+        </div>
+
+        <section class="product-list" id="products"></section>
+      </div>
+    </section>
+
+    <footer>
+      &copy; 2025 Магазин "Майстер-Водолій". Самовивіз: м.Харків, ТЦ Барабашово,
+      вул. Каринська 47
+    </footer>
+    <script src="index.js"></script>
+    <div class="parallax-bg"></div>
+    <div class="bubbles-container">
+      <span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+  </body>
 </html>

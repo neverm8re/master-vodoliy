@@ -1,26 +1,52 @@
 body {
-      font-family: sans-serif;
-      background: #024c98;
-      color: white;
-      margin: 0;
-      background-image: url(images/background-water.jpg);
-      animation: gradientMove 15s ease infinite;
-      background-size: cover;
-      background-attachment: fixed;
-    }
+  font-family: sans-serif;
+  background: #024c98;
+  color: white;
+  margin: 0;
+}
 
-    @keyframes gradientMove {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.navbar {
+  background-color: rgba(0, 76, 152, 0.95);
+  padding: 1em 2em;
+  border-radius: 10px;
+  margin-bottom: 2em;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1em;
+  z-index: 2;
+  position: relative;
+}
 
-    @media (max-width: 768px) {
-      body {
-        animation-duration: 25s; 
-      }
-    }
+.navbar a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 0.5em 1em;
+  border-radius: 5px;
+  transition: background 0.3s;
+}
 
+.navbar a:hover,
+.navbar a.active {
+  background-color: #ffd700;
+  color: #000;
+}
+.container {
+  max-width: 800px;
+  margin: auto;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 2em;
+  border-radius: 15px;
+  position: relative;
+  z-index: 1;
+  color: #000;
+}
     .content {
       max-width: 700px;
       margin: 0 auto;
@@ -47,7 +73,7 @@ body {
     }
 
     .repair-description strong {
-      color: #ffdd57;
+      color: #dbb107;
     }
 
     .repair-form {
@@ -104,3 +130,4 @@ body {
         font-size: 0.95rem;
       }
     }
+    

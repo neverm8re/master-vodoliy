@@ -1,16 +1,20 @@
 body {
-  font-family: "Segoe UI", sans-serif;
-  background-image: url(images/background-water.jpg);
-  background-size: 300% 300%;
-  animation: gradientMove 100s ease infinite;
+  font-family: sans-serif;
+  background: #024c98;
+  color: white;
   margin: 0;
-  padding: 2em;
 }
 
 @keyframes gradientMove {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .container {
@@ -46,7 +50,8 @@ table {
   margin-bottom: 1.5em;
 }
 
-th, td {
+th,
+td {
   border: 1px solid #cce0ff;
   padding: 0.6em;
   text-align: left;
@@ -71,7 +76,9 @@ th {
   background: #bb2d3b;
 }
 
-input, select, button {
+input,
+select,
+button {
   padding: 0.75em;
   margin: 0.5em 0;
   width: 100%;
@@ -81,7 +88,8 @@ input, select, button {
   box-sizing: border-box;
 }
 
-input:focus, select:focus {
+input:focus,
+select:focus {
   outline: none;
   border-color: #0d6efd;
   box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.25);
@@ -135,7 +143,9 @@ datalist option {
     border-radius: 12px;
   }
 
-  table, th, td {
+  table,
+  th,
+  td {
     font-size: 0.9em;
   }
 
@@ -143,7 +153,9 @@ datalist option {
     font-size: 1.4em;
   }
 
-  button, input, select {
+  button,
+  input,
+  select {
     font-size: 1em;
   }
 
@@ -156,7 +168,7 @@ datalist option {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1em;
-  table-layout: fixed; 
+  table-layout: fixed;
 }
 
 #cart-table th,
@@ -169,7 +181,7 @@ datalist option {
 
 .cart-item {
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
   align-items: flex-start;
   gap: 10px;
   width: 100%;
@@ -227,7 +239,7 @@ datalist option {
     font-size: 0.85rem;
   }
   .cart-price {
-    flex: 0 0 55px; 
+    flex: 0 0 55px;
     font-size: 0.85rem;
   }
   .remove-btn {
