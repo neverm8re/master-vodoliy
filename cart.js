@@ -37,7 +37,7 @@ async function getProductsByIds(ids) {
 
   const result = {};
 
-  data.forEach(row => {
+  data.forEach((row) => {
     result[row.id] = row;
   });
 
@@ -109,7 +109,7 @@ async function renderCart() {
 function removeItem(index) {
   if (index < 0 || index >= cart.length) return;
   cart.splice(index, 1);
-  localStorage.setItem("cart", JSON.stringify(cart)); 
+  localStorage.setItem("cart", JSON.stringify(cart));
   renderCart();
 }
 
@@ -179,7 +179,10 @@ ${itemsText}
       const res = await fetch(WORKER_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: message }),
+        body: JSON.stringify({
+          type: "order", //
+          text: message,
+        }),
       });
 
       if (res.status === 204 || res.status === 200) {
