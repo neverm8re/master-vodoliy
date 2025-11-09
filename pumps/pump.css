@@ -94,3 +94,25 @@ a {
   color: #fff;
   text-decoration: underline;
 }
+#toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(4, 21, 253, 0.651);
+  backdrop-filter: blur(12px);
+  padding: 14px 26px;
+  border-radius: 14px;
+  color: #fff;
+  font-size: 1rem;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .4s, bottom .4s;
+  z-index: 9999;
+}
+
+#toast.show {
+  opacity: 1;
+  bottom: 40px;
+}

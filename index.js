@@ -56,12 +56,20 @@ const supabaseUrl = 'https://aaxvtwqktggbjmxsmtyl.supabase.co';
 }
 
 
-  function addToCart(id) {
-    let cart = JSON.parse(localStorage.getItem("cart") || "[]");
-    cart.push(id);
-    localStorage.setItem("cart", JSON.stringify(cart));
-    alert("Товар додано до кошика!");
-  }
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 2000);
+}
+
+function addToCart(id) {
+  let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+  cart.push(id);
+  localStorage.setItem("cart", JSON.stringify(cart));
+  showToast("Товар додано до кошика!");
+}
+
 
   function filterCategory(category) {
     currentCategory = category;
@@ -99,7 +107,7 @@ const supabaseUrl = 'https://aaxvtwqktggbjmxsmtyl.supabase.co';
     const overlay = document.getElementById("filterOverlay");
     sidebar.classList.toggle("open");
     overlay.classList.toggle("active");
-  }
+  } 
 
   function closeMobileFilters() {
     document.getElementById("sidebarFilters").classList.remove("open");

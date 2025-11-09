@@ -38,11 +38,19 @@ async function loadPump() {
   container.style.display = "flex";
 
   document.querySelector(".buy-btn").addEventListener("click", () => {
-    let cart = JSON.parse(localStorage.getItem("cart") || "[]");
-    cart.push(id);
-    localStorage.setItem("cart", JSON.stringify(cart));
-    alert("Товар додано до кошика!");
-  });
+  let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+  cart.push(id);
+  localStorage.setItem("cart", JSON.stringify(cart));
+  showToast("Товар додано до кошика!");
+});
+
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 2000);
+}
+
 }
 
 loadPump();
