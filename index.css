@@ -733,6 +733,7 @@ footer {
 .navbar {
   background-color: rgba(0, 76, 152, 0.95);
   padding: 1em 2em;
+  margin: 8px;
   border-radius: 10px;
   margin-bottom: 2em;
   display: flex;
