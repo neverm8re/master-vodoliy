@@ -89,18 +89,36 @@ function addToCart(id) {
     pumpSeriesContainer.style.display = (category === "Занурювальні насоси" || isPumpType) ? "block" : "none";
   }
 
-  function filterAndSearch() {
-    const searchTerm = document.getElementById("searchInput").value.toLowerCase();
-    const cards = document.querySelectorAll(".card");
-    cards.forEach(card => {
-      const title = card.querySelector("h3").innerText.toLowerCase();
-      const cardCategory = card.dataset.category;
-      const cardPumptype = card.dataset.pumptype;
-      const matchesSearch = title.includes(searchTerm);
-      const matchesCategory = currentCategory === 'all' || cardCategory === currentCategory || cardPumptype === currentCategory;
-      card.style.display = (matchesSearch && matchesCategory) ? "" : "none";
-    });
-  }
+  function normalize(str) {
+  return str
+    .toLowerCase()
+    .replace(/,/g, ".")          
+    .replace(/-/g, "-")          
+    .replace(/[–—]/g, "-")       
+    .replace(/\s+/g, " ")       
+    .replace(/(\d)\s+(\d)/g, "$1$2") 
+    .trim();
+}
+
+function filterAndSearch() {
+  const searchTerm = normalize(document.getElementById("searchInput").value);
+
+  const cards = document.querySelectorAll(".card");
+
+  cards.forEach(card => {
+    const title = normalize(card.querySelector("h3").innerText);
+    const cardCategory = card.dataset.category;
+    const cardPumptype = card.dataset.pumptype;
+
+    const matchesSearch = title.includes(searchTerm);
+    const matchesCategory =
+      currentCategory === 'all' ||
+      cardCategory === currentCategory ||
+      cardPumptype === currentCategory;
+
+    card.style.display = (matchesSearch && matchesCategory) ? "" : "none";
+  });
+}
 
   function toggleMobileFilters() {
     const sidebar = document.getElementById("sidebarFilters");
