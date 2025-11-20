@@ -1,47 +1,23 @@
-const SUPABASE_URL = "https://aaxvtwqktggbjmxsmtyl.supabase.co";
-const SUPABASE_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFheHZ0d3FrdGdnYmpteHNtdHlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1MTYyMzksImV4cCI6MjA3MzA5MjIzOX0.y-DbmKs1r-o4uPq66Yqwcg1a4_0dbtaEmbdeL6VIKZY";
 const WORKER_URL = "https://send-order.master-vodoley.workers.dev/";
-
-let supabase = null;
-if (SUPABASE_URL && SUPABASE_KEY) {
-  try {
-    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-  } catch (e) {
-    console.warn("Не змогли ініціалізувати Supabase:", e);
-    supabase = null;
-  }
-}
-
-let cart = [];
-try {
-  cart = JSON.parse(localStorage.getItem("cart")) || [];
-  if (!Array.isArray(cart)) cart = [];
-} catch (e) {
-  cart = [];
-}
+let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+if (!Array.isArray(cart)) cart = [];
 
 const tbody = document.querySelector("#cart-table tbody");
 const totalEl = document.getElementById("total");
 const statusEl = document.getElementById("status");
 
 async function getProductsByIds(ids) {
-  if (!supabase) return {};
-
-  const { data, error } = await supabase
-    .from("products")
-    .select("*")
-    .in("id", ids);
-
-  if (error || !data) return {};
-
-  const result = {};
-
-  data.forEach((row) => {
-    result[row.id] = row;
-  });
-
-  return result;
+  if (!ids.length) return {};
+  try {
+    const res = await fetch(`https://supabase-key.master-vodoley.workers.dev/products?ids=${ids.join(",")}`);
+    const data = await res.json();
+    const result = {};
+    data.forEach(row => result[row.id] = row);
+    return result;
+  } catch (err) {
+    console.error(err);
+    return {};
+  }
 }
 
 function parsePriceToNumber(priceStr) {
@@ -79,25 +55,22 @@ async function renderCart() {
     total += priceNum;
 
     row.innerHTML = `
-  <td class="cart-title">
-    <div class="cart-item">
-      <img src="${item.img || ""}" alt="${escapeHtml(
-      item.title
-    )}" class="cart-img">
-      <div class="cart-text">${escapeHtml(item.title)}</div>
-    </div>
-  </td>
-  <td class="cart-price">${escapeHtml(item.price || "")}</td>
-  <td class="cart-action"><button class="remove-btn" data-index="${index}">Видалити</button></td>
-`;
-
+      <td class="cart-title">
+        <div class="cart-item">
+          <img src="${item.img || ""}" alt="${escapeHtml(item.title)}" class="cart-img">
+          <div class="cart-text">${escapeHtml(item.title)}</div>
+        </div>
+      </td>
+      <td class="cart-price">${escapeHtml(item.price || "")}</td>
+      <td class="cart-action"><button class="remove-btn" data-index="${index}">Видалити</button></td>
+    `;
     tbody.appendChild(row);
   });
 
   totalEl.textContent = `Разом: ${total} грн`;
 
-  tbody.querySelectorAll(".remove-btn").forEach((btn) => {
-    btn.addEventListener("click", (e) => {
+  tbody.querySelectorAll(".remove-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
       const idx = Number(btn.dataset.index);
       removeItem(idx);
     });
@@ -123,51 +96,47 @@ function escapeHtml(str) {
     .replaceAll("'", "&#039;");
 }
 
-document
-  .getElementById("order-form")
-  .addEventListener("submit", async function (e) {
-    e.preventDefault();
-    statusEl.textContent = "";
-    if (cart.length === 0) {
-      statusEl.textContent =
-        "Ваш кошик порожній. Додайте товари перед замовленням.";
-      return;
-    }
+// надсилання замовлення через Worker
+document.getElementById("order-form").addEventListener("submit", async function(e) {
+  e.preventDefault();
+  statusEl.textContent = "";
 
-    const submitBtn = this.querySelector('button[type="submit"]');
-    const surname = this.elements["surname"].value.trim();
-    const name = this.elements["name"].value.trim();
-    const patronymic = this.elements["patronymic"].value.trim();
-    const phone = this.elements["phone"].value.trim();
-    const city = this.elements["city"].value.trim();
-    const warehouse = this.elements["warehouse"].value.trim();
+  if (!cart.length) {
+    statusEl.textContent = "Ваш кошик порожній. Додайте товари перед замовленням.";
+    return;
+  }
 
-    const phoneRe = /^\+380\d{9}$/;
-    if (!phoneRe.test(phone)) {
-      statusEl.textContent = "Введіть коректний номер у форматі +380XXXXXXXXX";
-      return;
-    }
+  const submitBtn = this.querySelector('button[type="submit"]');
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Надсилається...";
 
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Надсилається...";
+  const surname = this.elements["surname"].value.trim();
+  const name = this.elements["name"].value.trim();
+  const patronymic = this.elements["patronymic"].value.trim();
+  const phone = this.elements["phone"].value.trim();
+  const city = this.elements["city"].value.trim();
+  const warehouse = this.elements["warehouse"].value.trim();
 
-    try {
-      const productMap = await getProductsByIds(cart);
-      const itemsText = cart
-        .map((id) => {
-          const it = productMap[id];
-          return it
-            ? `• ${it.title} — ${it.price}`
-            : `• ${id} — (невідомий товар)`;
-        })
-        .join("\n");
+  if (!/^\+380\d{9}$/.test(phone)) {
+    statusEl.textContent = "Введіть коректний номер у форматі +380XXXXXXXXX";
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Надіслати замовлення";
+    return;
+  }
 
-      const total = cart.reduce((acc, id) => {
-        const it = productMap[id];
-        return acc + (it ? parsePriceToNumber(it.price) : 0);
-      }, 0);
+  try {
+    const productMap = await getProductsByIds(cart);
+    const itemsText = cart.map(id => {
+      const it = productMap[id];
+      return it ? `• ${it.title} — ${it.price}` : `• ${id} — (невідомий товар)`;
+    }).join("\n");
 
-      const message = `🛒 НОВЕ ЗАМОВЛЕННЯ:
+    const total = cart.reduce((acc, id) => {
+      const it = productMap[id];
+      return acc + (it ? parsePriceToNumber(it.price) : 0);
+    }, 0);
+
+    const message = `🛒 НОВЕ ЗАМОВЛЕННЯ:
 👤 Клієнт: ${surname} ${name} ${patronymic}
 📞 Телефон: ${phone}
 🏙️ Місто: ${city}
@@ -176,42 +145,28 @@ document
 ${itemsText}
 💰 Разом: ${total} грн`;
 
-      const res = await fetch(WORKER_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          type: "order", //
-          text: message,
-        }),
-      });
+    const res = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ type: "order", text: message })
+    });
 
-      if (res.status === 204 || res.status === 200) {
-        let j = null;
-        try {
-          j = await res.json();
-        } catch {}
-        const ok = j ? j.success === true : true;
-        if (ok) {
-          statusEl.textContent = "Замовлення надіслано!";
-          localStorage.removeItem("cart");
-          cart = [];
-          renderCart();
-          this.reset();
-        } else {
-          throw new Error("Server returned unsuccessful response");
-        }
-      } else {
-        let text = await res.text();
-        console.error("Worker response:", res.status, text);
-        throw new Error("Помилка від сервера: " + res.status);
-      }
-    } catch (err) {
-      console.error(err);
-      statusEl.textContent = "Помилка надсилання. Спробуйте ще раз.";
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = "Надіслати замовлення";
+    if (res.ok) {
+      statusEl.textContent = "Замовлення надіслано!";
+      cart = [];
+      localStorage.removeItem("cart");
+      renderCart();
+      this.reset();
+    } else {
+      throw new Error(`Помилка від сервера: ${res.status}`);
     }
-  });
+  } catch (err) {
+    console.error(err);
+    statusEl.textContent = "Помилка надсилання. Спробуйте ще раз.";
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Надіслати замовлення";
+  }
+});
 
 renderCart();

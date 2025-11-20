@@ -1,23 +1,31 @@
-const supabaseUrl = 'https://aaxvtwqktggbjmxsmtyl.supabase.co';  
-  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFheHZ0d3FrdGdnYmpteHNtdHlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1MTYyMzksImV4cCI6MjA3MzA5MjIzOX0.y-DbmKs1r-o4uPq66Yqwcg1a4_0dbtaEmbdeL6VIKZY';                   // заміни на свій anon-key
-  const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
   window.pumpsData = [];
   let currentCategory = 'all';
   const pumptypeSet = new Set();
 
   async function loadProducts() {
-    const { data, error } = await supabase.from('products').select('*');
-    if (error) { console.error(error); return; }
+  try {
+    const res = await fetch('https://supabase-key.master-vodoley.workers.dev/all-products');
+    const data = await res.json();
+
+    data.sort((a, b) => (a.sort_index || 0) - (b.sort_index || 0));
+
     window.pumpsData = data;
+
     data.forEach(p => {
       if (p.category === "Занурювальні насоси" && p.pumptype) {
         pumptypeSet.add(p.pumptype);
       }
     });
+
     renderPumpSeriesButtons();
     renderProducts();
+  } catch (err) {
+    console.error(err);
   }
+}
+
+
 
   function renderPumpSeriesButtons() {
     const pumpSeriesButtons = document.getElementById("pumpSeriesButtons");
