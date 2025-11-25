@@ -1,4 +1,4 @@
-const WORKER_URL = "https://supabase-key.master-vodoley.workers.dev/products"; 
+const WORKER_URL = "https://supabase-key.master-vodoley.workers.dev/products";
 
 const urlParams = new URLSearchParams(window.location.search);
 const id = urlParams.get("id");
@@ -11,11 +11,10 @@ container.style.display = "none";
 
 async function loadPump() {
   try {
-    // Передаємо параметр ids, Worker повертає масив
     const res = await fetch(`${WORKER_URL}?ids=${id}`);
-    
+
     if (!res.ok) throw new Error("Помилка при отриманні даних");
-    
+
     const data = await res.json();
 
     if (!data || !data.length) {
@@ -24,7 +23,7 @@ async function loadPump() {
       return;
     }
 
-    const pump = data[0]; // перший елемент масиву
+    const pump = data[0];
 
     document.getElementById("pump-img").src = pump.img || "";
     document.getElementById("pump-title").textContent = pump.title || "";
@@ -43,14 +42,24 @@ async function loadPump() {
       localStorage.setItem("cart", JSON.stringify(cart));
       showToast("Товар додано до кошика!");
     });
-
   } catch (err) {
     console.error(err);
     document.querySelector(".container").innerHTML =
       "<h2>Сталася помилка при завантаженні насоса</h2>";
   }
 }
+document.getElementById("meta-title").textContent =
+  product.title + " — Купити в Україні";
+document
+  .getElementById("meta-description")
+  .setAttribute("content", product.short || product.title);
 
+document
+  .getElementById("meta-canonical")
+  .setAttribute(
+    "href",
+    "https://master-vodoley.com.ua/product/" + product.slug
+  );
 function showToast(message) {
   const toast = document.getElementById("toast");
   toast.textContent = message;
