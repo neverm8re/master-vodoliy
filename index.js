@@ -58,7 +58,7 @@ function renderProducts() {
       }')">Купити</button>
     `;
     card.onclick = () =>
-      (window.location.href = `pumps/pump.html?id=${item.id}`);
+      (window.location.href = `/pumps/index.html#${item.slug}`);
 
     container.appendChild(card);
   });

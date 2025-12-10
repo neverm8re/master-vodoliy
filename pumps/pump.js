@@ -1,7 +1,5 @@
 const WORKER_URL = "https://supabase-key.master-vodoley.workers.dev/products";
-
-const urlParams = new URLSearchParams(window.location.search);
-const id = urlParams.get("id");
+const slug = window.location.hash.substring(1);
 
 const loader = document.getElementById("loader-wrapper");
 const container = document.getElementById("product-container");
@@ -11,60 +9,58 @@ container.style.display = "none";
 
 async function loadPump() {
   try {
-    const res = await fetch(`${WORKER_URL}?ids=${id}`);
+    const allRes = await fetch("https://supabase-key.master-vodoley.workers.dev/all-products");
+    const allData = await allRes.json();
+    const pump = allData.find(p => p.slug === slug);
 
-    if (!res.ok) throw new Error("Помилка при отриманні даних");
-
-    const data = await res.json();
-
-    if (!data || !data.length) {
+    if (!pump) {
       document.querySelector(".container").innerHTML =
-        "<h2>Насос не знайдено 😢</h2>";
+        `<h2>Товар не знайдено 😢</h2>`;
       return;
     }
 
-    const pump = data[0];
+    const res = await fetch(`${WORKER_URL}?ids=${pump.id}`);
+    const data = await res.json();
 
-    document.getElementById("pump-img").src = pump.img || "";
-    document.getElementById("pump-title").textContent = pump.title || "";
-    document.getElementById("pump-price").textContent = pump.price || "";
-    document.getElementById("pump-brand").textContent = pump.brand || "";
-    document.getElementById("pump-stock").textContent = pump.stock || "";
-    document.getElementById("pump-desc").innerHTML = pump.desc || "";
-    document.getElementById("pump-warranty").textContent = pump.warranty || "";
+    if (!data || data.length === 0) {
+      document.querySelector(".container").innerHTML =
+        `<h2>Товар не знайдено 😢</h2>`;
+      return;
+    }
+
+    const fullPump = data[0];
+
+    document.getElementById("pump-img").src = fullPump.img || "";
+    document.getElementById("pump-title").textContent = fullPump.title;
+    document.getElementById("pump-price").textContent = fullPump.price;
+    document.getElementById("pump-brand").textContent = fullPump.brand;
+    document.getElementById("pump-stock").textContent = fullPump.stock;
+    document.getElementById("pump-desc").innerHTML = fullPump.desc;
+    document.getElementById("pump-warranty").textContent = fullPump.warranty;
+
+    document.getElementById("meta-title").textContent =
+      `${fullPump.title} — Купити`;
+    document
+      .getElementById("meta-description")
+      .setAttribute("content", fullPump.short || fullPump.title);
+
+    document
+      .getElementById("meta-canonical")
+      .setAttribute("href", window.location.href);
 
     loader.style.display = "none";
     container.style.display = "flex";
 
     document.querySelector(".buy-btn").addEventListener("click", () => {
       let cart = JSON.parse(localStorage.getItem("cart") || "[]");
-      cart.push(id);
+      cart.push(fullPump.id);
       localStorage.setItem("cart", JSON.stringify(cart));
       showToast("Товар додано до кошика!");
     });
+
   } catch (err) {
     console.error(err);
-    document.querySelector(".container").innerHTML =
-      "<h2>Сталася помилка при завантаженні насоса</h2>";
   }
-}
-document.getElementById("meta-title").textContent =
-  product.title + " — Купити в Україні";
-document
-  .getElementById("meta-description")
-  .setAttribute("content", product.short || product.title);
-
-document
-  .getElementById("meta-canonical")
-  .setAttribute(
-    "href",
-    "https://master-vodoley.com.ua/product/" + product.slug
-  );
-function showToast(message) {
-  const toast = document.getElementById("toast");
-  toast.textContent = message;
-  toast.classList.add("show");
-  setTimeout(() => toast.classList.remove("show"), 2000);
 }
 
 loadPump();
